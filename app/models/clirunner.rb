@@ -71,10 +71,10 @@ class CliRunner < InvalidInputError
     puts "please enter your username:"
   end
 
-  def self.get_user(input_username)
+  def self.get_user(input_username, chip_type)
     player = Player.retireve_player(input_username)
     if player == nil
-      player = Player.add_player(input_username)
+      player = Player.add_player(input_username, chip_type)
     end
     player
   end
@@ -88,10 +88,10 @@ class CliRunner < InvalidInputError
       Board.new_board
       puts "Player 1 #{self.username_prompt}"
       username1 = self.get_input
-      player_one = self.get_user(username1)
+      player_one = self.get_user(username1, 0)
       puts "Player 2 #{self.username_prompt}"
       username2 = self.get_input
-      player_two = self.get_user(username2)
+      player_two = self.get_user(username2, 1)
 
       input = ""
       i = 1
@@ -117,7 +117,7 @@ class CliRunner < InvalidInputError
             break
           end
 
-          valid = player.make_move(input)
+          valid = current_player.make_move(input)
 
           if valid == nil
             begin
@@ -178,9 +178,9 @@ class CliRunner < InvalidInputError
     #fills the board with the moves
     #determine number of players
     # if number of players = 2
-      self.two_player_mode(old_username1:, old_username2:)
+      #self.two_player_mode(old_username1:, old_username2:)
     #if number of players = 1
-      self.one_player_mode(old_username:, choice: #username & player 1 or player 2)
+      #self.one_player_mode(old_username:, choice: #username & player 1 or player 2)
   end
 
   def self.game_mode
