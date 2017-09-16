@@ -7,4 +7,3 @@ gem "pry"
 gem "require_all"
 gem 'rubysl-matrix'
 gem 'rubysl-prettyprint'
-# gem 'mspec'

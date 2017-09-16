@@ -1,14 +1,4 @@
 require 'bundler'
-require 'active_record'
-require 'rake'
-require_relative '../app/models/error.rb'
-require_relative '../app/models/board.rb'
-require_relative '../app/models/game.rb'
-require_relative '../app/models/move.rb'
-require_relative '../app/models/player.rb'
-require_relative '../app/models/clirunner.rb'
-
-
 Bundler.require
 
 ActiveRecord::Base.establish_connection(
@@ -17,3 +7,10 @@ ActiveRecord::Base.establish_connection(
 )
 
 ActiveRecord::Base.logger = nil
+
+require_relative '../app/models/error.rb'
+require_relative '../app/models/game.rb'
+require_relative '../app/models/board.rb'
+require_relative '../app/models/move.rb'
+require_relative '../app/models/player.rb'
+require_relative '../app/models/clirunner.rb'
