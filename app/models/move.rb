@@ -3,6 +3,7 @@ class Move < ActiveRecord::Base
   belongs_to :game
 
   def opp_chip_up?(same_chip, opp_chip, player)
+    
   end
 
   def opp_chip_down?(same_chip, opp_chip, player)
@@ -27,18 +28,30 @@ class Move < ActiveRecord::Base
   end
 
   def get_chip_types(player)
-    if player
-      same_chip = 0
-      opp_chip = 1
-    elsif
-      same_chip = 1
-      opp_chip = 0
-    end
     chips = {
-      same: same_chip,
-      opp: opp_chip
+      same: player.chip,
+      opp: (player.chip - 1).abs
     }
   end
+
+  def check_move(player)
+    chips = get_chip_types(player)
+    valid = []
+
+    valid << self.opp_chip_up?(chips[:same], chips[:opp], player)
+    valid << self.opp_chip_down?(chips[:same], chips[:opp], player)
+    valid << self.opp_chip_right?(chips[:same], chips[:opp], player)
+    valid << self.opp_chip_left?(chips[:same], chips[:opp], player)
+    valid << self.opp_chip_up_right?(chips[:same], chips[:opp], player)
+    valid << self.opp_chip_up_left?(chips[:same], chips[:opp], player)
+    valid << self.opp_chip_down_right?(chips[:same], chips[:opp], player)
+    valid << self.opp_chip_down_left?(chips[:same], chips[:opp], player)
+
+    if valid.include?(true)
+      return true
+    end
+  end
+
 
 
 end

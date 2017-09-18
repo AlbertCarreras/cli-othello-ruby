@@ -6,5 +6,6 @@ class CreatePlayer < ActiveRecord::Migration[5.0]
       t.integer :wins
       t.integer :losses
       t.boolean :winner, :default => false
+    end
   end
 end

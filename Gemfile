@@ -7,3 +7,6 @@ gem "pry"
 gem "require_all"
 gem 'rubysl-matrix'
 gem 'rubysl-prettyprint'
+#gem 'rake'
+# gem 'minitest', '~>5.8'
+# gem 'rdoc', '~>4.0'
