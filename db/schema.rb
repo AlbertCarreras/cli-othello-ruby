@@ -10,24 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 3) do
-
-  create_table "games", force: :cascade do |t|
-  end
-
-  create_table "moves", force: :cascade do |t|
-    t.integer "x_coor"
-    t.integer "y_coor"
-    t.integer "game_id"
-    t.integer "player_id"
-  end
+ActiveRecord::Schema.define(version: 1) do
 
   create_table "players", force: :cascade do |t|
     t.string "username"
     t.integer "chip"
-    t.integer "wins"
-    t.integer "losses"
-    t.boolean "winner", default: false
+    t.integer "wins", default: 0
+    t.integer "losses", default: 0
   end
 
 end
