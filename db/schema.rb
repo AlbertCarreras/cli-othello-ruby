@@ -14,9 +14,9 @@ ActiveRecord::Schema.define(version: 1) do
 
   create_table "players", force: :cascade do |t|
     t.string "username"
-    t.integer "chip"
-    t.integer "wins", default: 0
-    t.integer "losses", default: 0
+    t.integer "current_chip"
+    t.integer "wins"
+    t.integer "losses"
   end
 
 end

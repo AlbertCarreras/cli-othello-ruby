@@ -39,8 +39,8 @@ class Move
 
   def get_chip_types(player)
     chips = {
-      same: player.chip,
-      opp: (player.chip - 1).abs
+      same: player.current_chip,
+      opp: (player.current_chip - 1).abs
     }
   end
 

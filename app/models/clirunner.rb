@@ -65,64 +65,57 @@ class CliRunner < InvalidInputError
    end
 
    def self.get_user(input_username)
-     player = nil #Player.retireve_player(input_username)
+     player = Player.retrieve_player(input_username) #Player.retireve_player(input_username)
      if player == nil
        player = Player.add_player(input_username)
      end
      player
    end
 
-   def self.two_player_mode(old_username1: nil, old_username2: nil)
-     if old_username1 != nil && old_username2 != nil
-       #start an old game
-     elsif old_username1 != nil || old_username2 != nil
-       #new game with one old username1
-     else #new game
+   def self.two_player_mode
        Board.new.to_printable_board
        print "Player 1 "
        self.username_prompt
        username1 = self.get_input
        player_one = self.get_user(username1)
-       player_one.chip = 0
+       player_one.current_chip = 0
        print "Player 2 "
        self.username_prompt
        username2 = self.get_input
        player_two = self.get_user(username2)
-       player_two.chip = 1
+       player_two.current_chip = 1
 
        input = ""
        i = 1
        until input == "done"
-         valid = nil
+         valid = false
 
-         while valid == nil
+         while valid != true
            if i.odd?
-             puts "Player 1, please enter your move:"
              current_player = player_one
+             puts "#{current_player.username}, please enter your move:"
            else
-             puts "Player 2, please enter your move:"
              current_player = player_two
+             puts "#{current_player.username}, please enter your move:"
            end
 
            input = self.get_input
-           if input.length != 2
-             begin
-               raise InvalidInputError
-             rescue InvalidInputError => error
-               puts error.move_message
-             end
-             break
-           elsif input[0].scan(/[0-7]{1}/).length != 1 && input[1].scan(/[a-h]{1}/).length != 1
-             begin
-               raise InvalidInputError
-             rescue InvalidInputError => error
-               puts error.move_message
-             end
-             break
-           elsif input == "done"
-            break
-           elsif input == "instructions"
+           if input == "instructions"
              CliRunner.show_instructions
+             i -= 1
+           end
+
+           break if input == "done" || input == "pass" || input == "skip" || input == "instructions"
+
+           if input[0].scan(/[0-7]{1}/).length != 1 || input[1].scan(/^[a-h]+${1}/).length != 1 || input.length != 2
+
+             begin
+               raise InvalidInputError
+             rescue InvalidInputError => error
+               puts error.move_message
+             end
+             sleep(1)
+             i -= 1
              break
            end
 
@@ -134,6 +127,9 @@ class CliRunner < InvalidInputError
              rescue InvalidInputError => error
                puts error.move_message
              end
+             sleep(1)
+             system "clear"
+             Board.last.to_printable_board
            end
          end
          system "clear"
@@ -141,7 +137,6 @@ class CliRunner < InvalidInputError
          i += 1
        end
        system "clear"
-     end
    end
 
    def self.one_player_prompt
@@ -183,8 +178,6 @@ class CliRunner < InvalidInputError
          self.one_player_mode
        elsif input == "2"
          self.two_player_mode
-       elsif input == "old"
-         self.old_game
        else
          self.mode_error
        end
