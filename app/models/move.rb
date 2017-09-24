@@ -31,8 +31,12 @@ class Move
       if cell_check == opp_chip
         chips_to_change << [y_check, x_check]
       elsif cell_check == same_chip
-        self.execute_move(chip: same_chip, chips_to_change: chips_to_change, board: board)
-        return true
+        if player.class == Player
+          self.execute_move(chip: same_chip, chips_to_change: chips_to_change, board: board)
+          return true
+        elsif player.class == CPU
+          return chips_to_change
+        end
       end
     end
   end
@@ -66,8 +70,12 @@ class Move
       valid << self.opp_chip?(chips[:same], chips[:opp], player, board, values)
     end
 
-    if valid.include?(true)
+    if valid.include?(true) && player.class == Player
       return true
+    elsif player.class == CPU
+      return valid
+    else
+      return nil
     end
   end
 

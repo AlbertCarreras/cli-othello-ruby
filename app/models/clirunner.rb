@@ -73,7 +73,6 @@ class CliRunner < InvalidInputError
    end
 
    def self.two_player_mode
-       Board.new.to_printable_board
        print "Player 1 "
        self.username_prompt
        username1 = self.get_input
@@ -84,6 +83,8 @@ class CliRunner < InvalidInputError
        username2 = self.get_input
        player_two = self.get_user(username2)
        player_two.current_chip = 1
+       system "clear"
+       Board.new.to_printable_board
 
        input = ""
        i = 1
@@ -143,15 +144,101 @@ class CliRunner < InvalidInputError
      puts "Would you like to be Player 1 (0's) or Player 2 (1's)?"
    end
 
-   def self.one_player_mode(old_username: nil, choice: nil) #################################################
-     if choice == nil
-       self.one_player_prompt
-       player_num = self.get_input
-     else
-       player_num = choice
+   def self.one_player_mode #################################################
+     choice = ""
+     until choice == "1" || choice == "2"
+       if choice != "1" && choice != "2"
+         self.one_player_prompt
+         choice = self.get_input
+       else
+         choice = choice
+       end
      end
 
-     ##ADD EVERYTHIN
+     if choice == "1"
+       print "Player 1 "
+       self.username_prompt
+       username1 = self.get_input
+       player_one = self.get_user(username1)
+       player_one.current_chip = 0
+
+       ### set CPU attribtue
+       cpu = CPU.new(current_chip: 1)
+     elsif choice == "2"
+       print "Player 2 "
+       self.username_prompt
+       username2 = self.get_input
+       player_two = self.get_user(username2)
+       player_two.current_chip = 1
+
+       ### set CPU attribute
+       cpu = CPU.new(current_chip: 0)
+     end
+
+     system "clear"
+
+     Board.new.to_printable_board
+
+     input = ""
+     i = 1
+     until input == "done"
+       valid = false
+
+       while valid != true
+         if i.odd?
+           current_player = player_one
+           puts "#{current_player.username}, please enter your move:"
+
+           input = self.get_input
+
+           if input == "instructions"
+             CliRunner.show_instructions
+             i -= 1
+           end
+
+           break if input == "done" || input == "pass" || input == "skip" || input == "instructions"
+
+           if input[0].scan(/[0-7]{1}/).length != 1 || input[1].scan(/^[a-h]+${1}/).length != 1 || input.length != 2
+             begin
+               raise InvalidInputError
+             rescue InvalidInputError => error
+               puts error.move_message
+             end
+             sleep(1)
+             i -= 1
+             break
+           end
+
+           valid = current_player.make_move(input)
+
+           if valid == nil
+             begin
+               raise InvalidInputError
+             rescue InvalidInputError => error
+               puts error.move_message
+             end
+             sleep(1)
+             system "clear"
+             Board.last.to_printable_board
+           end
+
+         else
+           print "CPU is thinking"
+           3.times do
+             sleep(0.5)
+             print "."
+           end
+           puts "."
+
+           cpu.make_move
+
+         end
+       end
+       system "clear"
+       Board.last.to_printable_board
+       i += 1
+     end
+     system "clear"
 
    end
 
