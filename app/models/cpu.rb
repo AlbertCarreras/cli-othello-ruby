@@ -29,19 +29,12 @@ class CPU
     count
   end
 
-  def greatest_lead_response(board, chip, player)
-    if player == "human"
-      self.current_chip = (self.current_chip - 1).abs
-    else
-      self.current_chip = (self.current_chip - 1).abs
-    end
-
+  def greatest_lead_response(board, chip)
     x = 0
     y = 0
     t = 0
     final_change_hash = {}
     board_string = board.to_s
-    # test_board = eval(board_string)
 
     while x < 8
       while y < 8
@@ -49,7 +42,6 @@ class CPU
         move = Move.new(x_coor: x, y_coor: y)
         change_array = move.check_move(self)
         if change_array.compact.length > 0
-          # final_change_hash << change_array
           change_array.compact.flatten(1).each do |chips|
             test_board.send(:[]=, chips[0], chips[1], self.current_chip)
           end
@@ -100,7 +92,6 @@ class CPU
     final_change_hash = {}
     board_string1 = Board.last.matrix_string
     board_string2 = board_string1
-    test_board = eval(board_string2)
 
     while x < 8
       while y < 8
@@ -113,9 +104,9 @@ class CPU
               test_board.send(:[]=, chips[0], chips[1], self.current_chip)
             end
             # guess human response
-            test_board1 = self.greatest_lead_response(test_board, (self.current_chip - 1).abs, "human")
+            test_board1 = self.greatest_lead_response(test_board, (self.current_chip - 1).abs)
             # respond with highest separation of chips
-            test_board2 = self.greatest_lead_response(test_board1, self.current_chip, "cpu")
+            test_board2 = self.greatest_lead_response(test_board1, self.current_chip)
               # take total score
               count = self.get_total_score(test_board2)
               # enter score into final_change_hash
@@ -137,7 +128,7 @@ class CPU
     max = -100
     spread = ""
     final_chips_to_change = []
-    #checj here
+
     final_change_hash.each do |test_board, data|
       spread = data[:lead]
 
