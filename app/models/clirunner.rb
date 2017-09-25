@@ -179,6 +179,7 @@ class CliRunner < InvalidInputError
 
      Board.new.to_printable_board
 
+
      input = ""
      i = 1
      until input == "done"
@@ -220,6 +221,7 @@ class CliRunner < InvalidInputError
              sleep(1)
              system "clear"
              Board.last.to_printable_board
+
            end
 
          else
@@ -231,7 +233,10 @@ class CliRunner < InvalidInputError
            puts "."
 
            cpu.make_move
-
+           system "clear"
+           Board.last.to_printable_board
+           
+           i += 1
          end
        end
        system "clear"

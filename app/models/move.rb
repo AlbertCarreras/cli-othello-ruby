@@ -32,7 +32,7 @@ class Move
         chips_to_change << [y_check, x_check]
       elsif cell_check == same_chip
         if player.class == Player
-          self.execute_move(chip: same_chip, chips_to_change: chips_to_change, board: board)
+          self.execute_move(chip: same_chip, chips_to_change: chips_to_change)
           return true
         elsif player.class == CPU
           return chips_to_change
@@ -79,12 +79,15 @@ class Move
     end
   end
 
-  def execute_move(chip:, chips_to_change:, board:)
+  def execute_move(chip:, chips_to_change:)
+    board = eval(Board.last.matrix_string)
+
     chips_to_change.each do |change_chip|
       board.send(:[]=, change_chip[0], change_chip[1], chip)
     end
     matrix_string = board.to_s
     Board.last.matrix_string = matrix_string
+
   end
 
 end

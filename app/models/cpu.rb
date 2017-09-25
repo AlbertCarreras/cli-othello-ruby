@@ -94,16 +94,18 @@ class CPU
   end
 
   def make_move
-    x = 3
-    y = 5
+    x = 0
+    y = 0
     t = 0
     final_change_hash = {}
-    board_string = Board.last.matrix_string
-    test_board = eval(board_string)
+    board_string1 = Board.last.matrix_string
+    board_string2 = board_string1
+    test_board = eval(board_string2)
 
     while x < 8
       while y < 8
         # check for viable moves
+          test_board = eval(board_string2)
           move = Move.new(x_coor: x, y_coor: y)
           change_array = move.check_move(self).compact.flatten(1)
           if change_array.length > 0
@@ -111,11 +113,11 @@ class CPU
               test_board.send(:[]=, chips[0], chips[1], self.current_chip)
             end
             # guess human response
-            test_board = self.greatest_lead_response(test_board, (self.current_chip - 1).abs, "human")
+            test_board1 = self.greatest_lead_response(test_board, (self.current_chip - 1).abs, "human")
             # respond with highest separation of chips
-            test_board = self.greatest_lead_response(test_board, self.current_chip, "cpu")
+            test_board2 = self.greatest_lead_response(test_board1, self.current_chip, "cpu")
               # take total score
-              count = self.get_total_score(test_board)
+              count = self.get_total_score(test_board2)
               # enter score into final_change_hash
               final_change_hash["test_#{t}".to_sym] = {
                 change_array: change_array,
@@ -135,6 +137,7 @@ class CPU
     max = -100
     spread = ""
     final_chips_to_change = []
+    #checj here
     final_change_hash.each do |test_board, data|
       spread = data[:lead]
 
@@ -143,8 +146,14 @@ class CPU
         final_chips_to_change = data[:change_array]
       end
     end
-    binding.pry
 
+    board = eval(board_string2)
+    if final_chips_to_change.length > 0
+      final_chips_to_change.each do |chips|
+        board.send(:[]=, chips[0], chips[1], self.current_chip)
+      end
+    end
+    Board.last.matrix_string = board.to_s
   end
 
 end
