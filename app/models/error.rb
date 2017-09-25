@@ -6,4 +6,8 @@ class InvalidInputError < StandardError
   def move_message
     "     That move is not valid. Please try again."
   end
+
+  def input_message
+    "     Invalid input. Please type the row # followed by the column letter"
+  end
 end

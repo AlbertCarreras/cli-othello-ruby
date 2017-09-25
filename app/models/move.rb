@@ -24,7 +24,7 @@ class Move
         cell_check = board.[](y_check, x_check)
         chips_to_change << [y_check, x_check]
 
-        until cell_check == same_chip || cell_check == 7 || cell_check == nil
+        until cell_check == same_chip || cell_check == 7
           x_check += direction[0]
           y_check += direction[1]
 

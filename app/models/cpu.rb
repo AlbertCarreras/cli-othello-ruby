@@ -40,8 +40,8 @@ class CPU
       while y < 8
         test_board = eval(board_string)
         move = Move.new(x_coor: x, y_coor: y)
-        change_array = move.check_move(self)
-        if change_array.compact.length > 0
+        change_array = move.check_move(self).compact.flatten(1)
+        if change_array.length > 0
           change_array.compact.flatten(1).each do |chips|
             test_board.send(:[]=, chips[0], chips[1], self.current_chip)
           end
@@ -137,6 +137,7 @@ class CPU
         final_chips_to_change = data[:change_array]
       end
     end
+
 
     board = eval(board_string2)
     if final_chips_to_change.length > 0

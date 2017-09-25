@@ -203,7 +203,7 @@ class CliRunner < InvalidInputError
              begin
                raise InvalidInputError
              rescue InvalidInputError => error
-               puts error.move_message
+               puts error.input_message
              end
              sleep(1)
              i -= 1
@@ -235,7 +235,7 @@ class CliRunner < InvalidInputError
            cpu.make_move
            system "clear"
            Board.last.to_printable_board
-           
+
            i += 1
          end
        end
