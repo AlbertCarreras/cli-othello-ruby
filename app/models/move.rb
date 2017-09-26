@@ -14,21 +14,24 @@ class Move
   end
 
   def opp_chip?(same_chip, opp_chip, player, board, direction)
-    if board.[](self.y_coor, self.x_coor) == 7
+    board_string = board.to_s
+    test_board = eval(board_string)
+    if test_board.[](self.y_coor, self.x_coor) == 7
       x_check = self.x_coor + direction[0]
       y_check = self.y_coor + direction[1]
-      if x_check > 0 && x_check < 8 && y_check > 0 && y_check < 8
+      if x_check >= 0 && x_check < 8 && y_check >= 0 && y_check < 8
 
         chips_to_change = []
         chips_to_change << [self.y_coor, self.x_coor]
-        cell_check = board.[](y_check, x_check)
+        cell_check = test_board.[](y_check, x_check)
         chips_to_change << [y_check, x_check]
 
         until cell_check == same_chip || cell_check == 7
           x_check += direction[0]
           y_check += direction[1]
+          break if x_check < 0 || x_check > 8 || y_check < 0 || y_check > 8
 
-          cell_check = board.[](y_check, x_check)
+          cell_check = test_board.[](y_check, x_check)
 
           if cell_check == opp_chip
             chips_to_change << [y_check, x_check]

@@ -27,11 +27,23 @@ class Board
     self.send(:[]=, i, j, chip)
   end
 
-  def get_chip_count
-
+  def get_chip_count(board)
+    count = {
+      zero: 0,
+      one: 0
+    }
+    board.each do |cell|
+      if cell == 0
+        count[:zero] += 1
+      elsif cell == 1
+        count[:one] += 1
+      end
+    end
+    count
   end
 
   def to_printable_board
+    count = self.get_chip_count(eval(self.matrix_string))
     puts "           _   _          _ _     "
     puts "          | | | |        | | |      "
     puts "      ___ | |_| |__   ___| | | ___  "
@@ -39,7 +51,8 @@ class Board
     puts "    | (_) | |_| | | |  __/ | | (_) |"
     puts "     \\___/ \\__|_| |_|\\___|_|_|\\___/ "
     puts "\n"
-
+    puts "     Player 1: #{count[:zero]}      Player 2: #{count[:one]}"
+    puts "\n"
     i = 0
     j = 0
     puts "     a   b   c   d   e   f   g   h "
