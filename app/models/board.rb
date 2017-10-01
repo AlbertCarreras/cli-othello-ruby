@@ -27,7 +27,7 @@ class Board
     self.send(:[]=, i, j, chip)
   end
 
-  def get_chip_count(board)
+  def self.get_chip_count(board)
     count = {
       zero: 0,
       one: 0
@@ -43,7 +43,7 @@ class Board
   end
 
   def to_printable_board
-    count = self.get_chip_count(eval(self.matrix_string))
+    count = self.class.get_chip_count(eval(self.matrix_string))
     puts "           _   _          _ _     "
     puts "          | | | |        | | |      "
     puts "      ___ | |_| |__   ___| | | ___  "

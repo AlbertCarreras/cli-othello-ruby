@@ -232,7 +232,7 @@ class CliRunner < InvalidInputError
            end
            puts "."
 
-           cpu.make_move
+           cpu.find_move
            system "clear"
            Board.last.to_printable_board
 
