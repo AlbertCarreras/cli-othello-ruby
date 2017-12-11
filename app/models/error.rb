@@ -10,4 +10,9 @@ class InvalidInputError < StandardError
   def input_message
     "     Invalid input. Please type the row # followed by the column letter"
   end
+
+  def mode_message
+    "     Invalid input. Please enter '1' or '2' to continue."
+  end
+
 end

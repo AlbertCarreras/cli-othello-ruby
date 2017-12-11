@@ -78,11 +78,11 @@ class Move
     end
 
     if valid.include?(true) && player.class == Player
-      return true
+      true
     elsif player.class == CPU
-      return valid
+      valid
     else
-      return nil
+      nil
     end
   end
 
